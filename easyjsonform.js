@@ -709,6 +709,36 @@ class EasyJsonFormFieldTextgroup extends EasyJsonFormField {
     }
 }
 
+class EasyJsonFormFieldDate extends EasyJsonFormField {
+    constructor(json = null) {
+        super(json);
+        this.type = 'date';
+    }
+
+    formFieldCreate(ejf, position, withValidation = false) {
+        let validationError = (withValidation && this.validate().length > 0);
+        let lblFormField = ejf.element('label', 'FieldNumberLabel', validationError ? 'ValidationErrorLabel' : null);
+        lblFormField.htmlFor = `${ejf.id}[${position}]`;
+        lblFormField.innerHTML = `${this.label}${this.helpText()}`;
+        let iptFormField = ejf.element('input', 'FieldNumberInput', validationError ? 'ValidationErrorInput' : null);
+        iptFormField.disabled = ejf.options.disabled || false;
+        iptFormField.id = `${ejf.id}[${position}]`;
+        iptFormField.name = `${ejf.id}[${position}]`;
+        iptFormField.type = 'date';
+        iptFormField.value = this.value;
+        iptFormField.onchange = () => {this.value = iptFormField.value; if (ejf.options.onValueChange) ejf.options.onValueChange();};
+        let formField = ejf.element('div', 'FieldNumber');
+        formField.appendChild(lblFormField);
+        formField.appendChild(iptFormField);
+        if (validationError) formField.appendChild(this.validationErrorMessage(ejf));
+        return formField;
+    }
+
+    validate() {
+        return (this.mandatory && this.value === null) ? ['validation.error.mandatory'] : [];
+    }
+}
+
 class EasyJsonForm {
 
     /**
@@ -924,7 +954,6 @@ class EasyJsonForm {
         });
         if (this.builder) this.builderUpdate();
         if (this.form) this.formUpdate();
-        this.onStructureChange();
     }
 
     valueExport(mode = 'raw') {
@@ -990,6 +1019,7 @@ class EasyJsonForm {
         'singlechoice': EasyJsonFormFieldSingleChoice,
         'multiplechoice': EasyJsonFormFieldMultipleChoice,
         'file': EasyJsonFormFieldFile,
+        'date': EasyJsonFormFieldDate
     };
     static supportedFileTypes = {
         'application/pdf' : {extensions:['pdf']},
@@ -1043,6 +1073,7 @@ class EasyJsonForm {
         "item.properties.mandatory": "Mandatory",
         "item.number": "Number",
         "item.text": "Text",
+        "item.date": "Date",
         "item.text.character.count": "{{chars}} characters",
         "item.text.properties.length.max": "Maximum length",
         "item.text.properties.length.measure": "Restrict length",
