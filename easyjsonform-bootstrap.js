@@ -34,6 +34,18 @@ var ejfBootstrapStyle = {
         classList: [],
         style: {},
     },
+    FieldDate: {
+        classList: ['my-3'],
+        style: {},
+    },
+    FieldDateLabel: {
+        classList: ['form-label'],
+        style: {},
+    },
+    FieldDateInput: {
+        classList: ['form-control'],
+        style: {},
+    },
     FieldFile: {
         classList: ['my-3'],
         style: {},
