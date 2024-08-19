@@ -717,17 +717,17 @@ class EasyJsonFormFieldDate extends EasyJsonFormField {
 
     formFieldCreate(ejf, position, withValidation = false) {
         let validationError = (withValidation && this.validate().length > 0);
-        let lblFormField = ejf.element('label', 'FieldNumberLabel', validationError ? 'ValidationErrorLabel' : null);
+        let lblFormField = ejf.element('label', 'FielDateLabel', validationError ? 'ValidationErrorLabel' : null);
         lblFormField.htmlFor = `${ejf.id}[${position}]`;
         lblFormField.innerHTML = `${this.label}${this.helpText()}`;
-        let iptFormField = ejf.element('input', 'FieldNumberInput', validationError ? 'ValidationErrorInput' : null);
+        let iptFormField = ejf.element('input', 'FieldDateInput', validationError ? 'ValidationErrorInput' : null);
         iptFormField.disabled = ejf.options.disabled || false;
         iptFormField.id = `${ejf.id}[${position}]`;
         iptFormField.name = `${ejf.id}[${position}]`;
         iptFormField.type = 'date';
         iptFormField.value = this.value;
         iptFormField.onchange = () => {this.value = iptFormField.value; if (ejf.options.onValueChange) ejf.options.onValueChange();};
-        let formField = ejf.element('div', 'FieldNumber');
+        let formField = ejf.element('div', 'FieldDate');
         formField.appendChild(lblFormField);
         formField.appendChild(iptFormField);
         if (validationError) formField.appendChild(this.validationErrorMessage(ejf));
